@@ -55,6 +55,25 @@ def auth():
 			"status":200
 			}
 
+
+@app.route("/register", methods=["POST"])
+def register():
+	data = request.get_json()
+
+	if (User.objects(username = data["username"])):
+		return {"status":403, "reason":"Username already exists"}
+	else:
+		salt = b64encode(urandom(128)).decode("utf-8")
+		User(username = data["username"], 
+			hashed_password=hash(data["password"], salt), 
+			salt=salt).save()
+
+		return {
+			"status":200, 
+			"token":jwt.encode({"username":data["username"]}, secret_key, algorithm="HS256").decode("utf-8")
+		}
+	pass
+
 @app.route("/dbtest")
 def debug():
 	m = User(name="mood", password="doof").save()
