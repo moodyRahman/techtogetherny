@@ -5,8 +5,8 @@ connect(host="mongodb+srv://ttny:doof@moody.tjfji.mongodb.net/moody?retryWrites=
 
 
 class User(Document):
-    name = StringField()
-    password = StringField()
-    salt = StringField()
+	username = StringField()
+	hashed_password = StringField()
+	salt = StringField()
 
 print("loaded db")
