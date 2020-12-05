@@ -29,10 +29,10 @@ export default function Register() {
       body: JSON.stringify(data) // body data type must match "Content-Type" header
     })
     .then(res => res.json())
-    .then((result) => {
-      console.log(result)
-      if (result.status === 200){ 
-        setToken(result.token)
+    .then((response) => {
+      console.log(response)
+      if (response.status === 200){ 
+        setToken(response.token)
         console.log(token)
       }
       else{
