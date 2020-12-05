@@ -4,7 +4,7 @@ from flask import *
 from flask_cors import CORS
 import jwt
 from os import urandom
-from db import *
+from . import db 
 import hashlib
 from base64 import b64encode
 
@@ -66,7 +66,7 @@ def auth():
 @app.route("/login", methods=["POST"])
 def login():
 	data = request.get_json()
-	get_user = User.objects(username=data["username"])[0]
+	get_user = db.User.objects(username=data["username"])[0]
 	salt = get_user.salt
 	if (hash(data["password"], salt) == get_user.hashed_password):
 		payload = {"username":get_user.username}
@@ -78,11 +78,11 @@ def login():
 def register():
 	data = request.get_json()
 
-	if (User.objects(username = data["username"])):
+	if (db.User.objects(username = data["username"])):
 		return {"status":403, "reason":"Username already exists"}
 	else:
 		salt = b64encode(urandom(128)).decode("utf-8")
-		User(username = data["username"], 
+		db.User(username = data["username"], 
 			hashed_password=hash(data["password"], salt), 
 			salt=salt).save()
 
@@ -106,7 +106,7 @@ def jwtdebug():
 
 @app.route("/dbtest")
 def debug():
-	m = User(username="xxxxxxxxxxxxxxxxx", hashed_password="doof", salt="ddd").save()
+	m = db.User(username="xxxxxxxxxxxxxxxxx", hashed_password="doof", salt="ddd").save()
 	return "hello"
 
 

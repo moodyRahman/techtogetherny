@@ -1,12 +1,12 @@
 
-from mongoengine import *
+import mongoengine as mg
 
-connect(host="mongodb+srv://ttny:doof@moody.tjfji.mongodb.net/moody?retryWrites=true&w=majority")
+mg.connect(host="mongodb+srv://ttny:doof@moody.tjfji.mongodb.net/moody?retryWrites=true&w=majority")
 
 
-class User(Document):
-	username = StringField()
-	hashed_password = StringField()
-	salt = StringField()
+class User(mg.Document):
+	username = mg.StringField()
+	hashed_password = mg.StringField()
+	salt = mg.StringField()
 
 print("loaded db")
