@@ -27,7 +27,7 @@ def jwtverify(route):
 			return route(*args, **kwargs, user=user)
 		except Exception as e:
 			print(e)
-			return {"status":403}
+			return {"status":403, "reason":"Bad Token"}
 	
 	return wrapper
 
@@ -91,6 +91,18 @@ def register():
 			"token":jwt.encode({"username":data["username"]}, secret_key, algorithm="HS256").decode("utf-8")
 		}
 	pass
+
+@app.route("/jwtdebug", methods=["POST"])
+def jwtdebug():
+	try:
+		decoded = jwt.decode(request.headers["Authorization"], secret_key, algorithms="HS256")
+		user = decoded["username"]
+		print(user)
+		return {"username":user}
+	except Exception as e:
+		print(e)
+		return {"status":403, "reason":"bad token"}
+
 
 @app.route("/dbtest")
 def debug():
