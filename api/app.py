@@ -6,30 +6,17 @@ import jwt
 from os import urandom
 from . import db 
 import hashlib
+from .decorators import *
 from base64 import b64encode
 
 app = Flask(__name__)
 CORS(app)
 
-secret_key = "dfgjdkghdfkjg"
+
 
 def hash(password, salt):
 	return hashlib.sha512((password+salt).encode('utf-8')).hexdigest()
 	pass
-
-def jwtverify(route):
-	@wraps(route)
-	def wrapper(*args, **kwargs):
-		try:
-			decoded = jwt.decode(request.headers["Authorization"], secret_key, algorithms="HS256")
-			user = decoded["username"]
-			print(user)
-			return route(*args, **kwargs, user=user)
-		except Exception as e:
-			print(e)
-			return {"status":403, "reason":"Bad Token"}
-	
-	return wrapper
 
 
 @app.route("/api", methods=["GET", "POST"])
