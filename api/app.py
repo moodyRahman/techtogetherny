@@ -69,8 +69,9 @@ def login():
 	get_user = User.objects(username=data["username"])[0]
 	salt = get_user.salt
 	if (hash(data["password"], salt) == get_user.hashed_password):
-		pass
-	pass
+		payload = {"username":get_user.username}
+		return {"status":200, "token":jwt.encode(payload, secret_key, algorithm="HS256").decode("utf-8")}
+	return {"status":403, "reason":"Incorrect Credentials"}
 
 
 @app.route("/register", methods=["POST"])
