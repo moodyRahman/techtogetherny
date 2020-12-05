@@ -56,6 +56,16 @@ def auth():
 			}
 
 
+@app.route("/login", methods=["POST"])
+def login():
+	data = request.get_json()
+	get_user = User.objects(username=data["username"])[0]
+	salt = get_user.salt
+	if (hash(data["password"], salt) == get_user.hashed_password):
+		pass
+	pass
+
+
 @app.route("/register", methods=["POST"])
 def register():
 	data = request.get_json()
