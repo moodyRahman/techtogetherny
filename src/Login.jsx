@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { tokenContext } from "./Context.js"
 import "./App.scss";
+import { Redirect } from 'react-router-dom';
 
 export default function Login() {
   const { token, setToken } = useContext(tokenContext)
@@ -24,16 +25,19 @@ export default function Login() {
     })
       .then(res => res.json())
       .then(response => {
-        console.log(response)
-        setToken(response.token)
+        if (response.status == 200)
+        {
+          console.log(response)
+          setToken(response.token)
+          setRedirect("/register")
+        }
       })
 
   }
 
   if (redirect) {
     return (
-      <>
-      </>
+      <Redirect to="/register" />
     )
   }
   else {
