@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   BrowserRouter as Router,
   Switch,
@@ -8,11 +8,16 @@ import {
 import Login from './Login.jsx';
 import Register from './Register.jsx';
 import './App.scss';
+import {tokenContext} from "./Context.js"
 
 export default function App() {
+
+  const [token, setToken] = useState("");
+  
   return (
     <div className="App">
       <Router>
+      <tokenContext.Provider value={{token, setToken}}>
         <div>
           <nav>
             <ul>
@@ -42,6 +47,7 @@ export default function App() {
             </Route>
           </Switch>
         </div>
+      </tokenContext.Provider>
       </Router>
     </div>
   );
