@@ -3,12 +3,19 @@ from functools import wraps
 from flask import *
 from flask_cors import CORS
 import jwt
+from os import urandom
 from db import *
+import hashlib
+from base64 import b64encode
 
 app = Flask(__name__)
 CORS(app)
 
 secret_key = "dfgjdkghdfkjg"
+
+def hash(password, salt):
+	return hashlib.sha512((password+salt).encode('utf-8')).hexdigest()
+	pass
 
 def jwtverify(route):
 	@wraps(route)
@@ -51,9 +58,9 @@ def auth():
 	print("====================")
 	print(encoded)
 	return {
-			"token":encoded,
-			"status":200
-			}
+		"token":encoded,
+		"status":200
+	}
 
 
 @app.route("/login", methods=["POST"])
@@ -86,7 +93,7 @@ def register():
 
 @app.route("/dbtest")
 def debug():
-	m = User(name="mood", password="doof").save()
+	m = User(username="xxxxxxxxxxxxxxxxx", hashed_password="doof", salt="ddd").save()
 	return "hello"
 
 
