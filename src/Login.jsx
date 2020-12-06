@@ -37,7 +37,7 @@ export default function Login() {
 
   if (redirect) {
     return (
-      <Redirect to="/register" />
+      <Redirect to={redirect} />
     )
   }
   else {
