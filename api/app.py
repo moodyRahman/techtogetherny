@@ -53,7 +53,10 @@ def auth():
 @app.route("/login", methods=["POST"])
 def login():
 	data = request.get_json()
-	get_user = db.User.objects(username=data["username"])[0]
+	get_user = db.User.objects(username=data["username"])
+	if (not get_user):
+		return {"status":403, "reason":"User doesn't exist"}
+	get_user = get_user[0]
 	salt = get_user.salt
 	if (hash(data["password"], salt) == get_user.hashed_password):
 		payload = {"username":get_user.username}
